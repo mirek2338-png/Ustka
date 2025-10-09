@@ -1,0 +1,80 @@
+Jeśli chcesz — mogę pomóc Ci ustawić Chrome zawsze bez GPU, z poprawną ikoną i ewentualnie automatycznym uruchamianiem.
+
+
+
+
+
+
+
+Powiedziałeś(-aś):
+tak chcę ale z nową wersją chrom i wyczyszczeniem 138 które ma blokadę aktualizacji
+
+
+ChatGPT powiedział:
+Świetnie — zróbmy to krok po kroku, czyli:
+
+🎯 Cel:
+✅ Usunąć Chrome 138, który ma blokadę aktualizacji (apt-mark hold)
+
+✅ Zainstalować najnowszą stabilną wersję Chrome
+
+✅ Utworzyć skrót .desktop, który uruchamia Chrome bez GPU
+
+✅ Upewnić się, że wszystko działa poprawnie
+
+🧼 KROK 1: Usuń Chrome 138 i odblokuj aktualizacje
+W terminalu wykonaj:
+
+bash
+Skopiuj kod
+sudo apt-mark unhold google-chrome-stable
+sudo apt remove --purge google-chrome-stable
+sudo apt autoremove
+🌐 KROK 2: Pobierz i zainstaluj najnowszy Chrome
+bash
+Skopiuj kod
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+Jeśli pojawią się błędy zależności:
+
+bash
+Skopiuj kod
+sudo apt-get install -f
+🔧 KROK 3: Utwórz skrót .desktop bez akceleracji GPU
+Utwórz nowy plik:
+
+bash
+Skopiuj kod
+nano ~/.local/share/applications/google-chrome-nogpu.desktop
+Wklej do środka:
+
+ini
+Skopiuj kod
+[Desktop Entry]
+Version=1.0
+Name=Google Chrome (Bez GPU)
+Comment=Chrome bez akceleracji sprzętowej
+Exec=/usr/bin/google-chrome-stable --disable-gpu --disable-features=UseOzonePlatform %U
+Terminal=false
+Icon=/usr/share/icons/hicolor/128x128/apps/google-chrome.png
+Type=Application
+Categories=Network;WebBrowser;
+StartupNotify=true
+Zapisz Ctrl + O, Enter, zamknij Ctrl + X
+
+Nadaj prawa:
+
+bash
+Skopiuj kod
+chmod +x ~/.local/share/applications/google-chrome-nogpu.desktop
+🚀 KROK 4: (Opcjonalnie) Dodaj Chrome do autostartu
+Utwórz plik autostartu:
+
+bash
+Skopiuj kod
+mkdir -p ~/.config/autostart
+cp ~/.local/share/applications/google-chrome-nogpu.desktop ~/.config/autostart/
+✅ Gotowe
+
+sudo apt-mark hold google-chrome-stable
+
